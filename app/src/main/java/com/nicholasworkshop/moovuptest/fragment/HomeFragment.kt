@@ -16,7 +16,6 @@ import com.nicholasworkshop.moovuptest.api.FriendService
 import com.nicholasworkshop.moovuptest.databinding.ViewFriendBinding
 import com.nicholasworkshop.moovuptest.model.Friend
 import com.nicholasworkshop.moovuptest.model.FriendDao
-import com.nicholasworkshop.moovuptest.model.FriendDatabase
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -27,8 +26,6 @@ class HomeFragment : Fragment() {
     @Inject lateinit var friendService: FriendService
     @Inject lateinit var friendDao: FriendDao
     @Inject lateinit var viewModel: HomeViewModel
-
-    private lateinit var adapter: Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +43,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        activity!!.title = "All friends"
         val adapter = Adapter()
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter

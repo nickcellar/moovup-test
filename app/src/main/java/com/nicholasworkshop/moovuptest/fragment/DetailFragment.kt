@@ -57,6 +57,7 @@ class DetailFragment : Fragment() {
                 .map { it.findById(id) }
                 .observeOn(mainThread())
                 .subscribe {
+                    activity!!.title = "Your friend: ${it.name}";
                     binding.friend = it
                     binding.executePendingBindings()
                     subject.onNext(LatLng(it.latitude!!, it.longitude!!))
