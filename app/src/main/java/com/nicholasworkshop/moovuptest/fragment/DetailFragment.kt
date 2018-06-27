@@ -49,7 +49,9 @@ class DetailFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mapView.onDestroy()
+        if (mapView != null) {
+            mapView.onDestroy()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

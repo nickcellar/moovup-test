@@ -12,8 +12,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportFragmentManager
                 .beginTransaction()
+                .addToBackStack("home")
                 .replace(R.id.containerView, HomeFragment())
-//                .replace(R.id.containerView, DetailFragment())
                 .commit()
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
     }
 }

@@ -18,6 +18,7 @@ import com.nicholasworkshop.moovuptest.model.Friend
 import com.nicholasworkshop.moovuptest.model.FriendDao
 import com.nicholasworkshop.moovuptest.model.FriendDatabase
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -78,6 +79,13 @@ class HomeFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
             val binding = ViewFriendBinding.inflate(layoutInflater, parent, false)
+            binding.clickListener = View.OnClickListener {
+                fragmentManager!!
+                        .beginTransaction()
+                        .addToBackStack("detail")
+                        .replace(R.id.containerView, DetailFragment())
+                        .commit()
+            }
             return HomeViewHolder(binding)
         }
 
