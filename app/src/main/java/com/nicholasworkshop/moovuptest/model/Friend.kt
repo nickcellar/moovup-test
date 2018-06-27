@@ -24,7 +24,7 @@ interface FriendDao {
     @Query("SELECT * FROM friend WHERE name LIKE :name LIMIT 1")
     fun findByName(name: String): Friend
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(friends: List<Friend>)
 
     @Delete
