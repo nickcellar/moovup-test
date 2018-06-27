@@ -2,6 +2,7 @@ package com.nicholasworkshop.moovuptest
 
 import com.nicholasworkshop.moovuptest.api.ApiModule
 import com.nicholasworkshop.moovuptest.api.FriendService
+import com.nicholasworkshop.moovuptest.fragment.DetailFragment
 import com.nicholasworkshop.moovuptest.model.DatabaseModule
 import com.nicholasworkshop.moovuptest.model.FriendDao
 import com.nicholasworkshop.moovuptest.model.FriendDatabase
@@ -20,4 +21,6 @@ interface MainComponent {
     fun friendDatabase(): FriendDatabase
 
     fun friendDao(): FriendDao
+
+    fun inject(detailFragment: DetailFragment)
 }

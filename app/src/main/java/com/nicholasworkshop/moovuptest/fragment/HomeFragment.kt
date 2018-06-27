@@ -83,7 +83,7 @@ class HomeFragment : Fragment() {
                 fragmentManager!!
                         .beginTransaction()
                         .addToBackStack("detail")
-                        .replace(R.id.containerView, DetailFragment())
+                        .replace(R.id.containerView, DetailFragment.newInstance(binding.friend!!.id))
                         .commit()
             }
             return HomeViewHolder(binding)
@@ -94,7 +94,6 @@ class HomeFragment : Fragment() {
         }
     }
 }
-
 
 class HomeViewHolder(
         private val binding: ViewFriendBinding

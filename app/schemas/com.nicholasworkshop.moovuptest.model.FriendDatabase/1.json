@@ -2,15 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "85406cb4c2573c90f5cb9874fc6e344c",
+    "identityHash": "be67a237308f76d10c4015b13419d78f",
     "entities": [
       {
         "tableName": "Friend",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` TEXT NOT NULL, `picture` TEXT, `name` TEXT, `email` TEXT, `latitude` REAL, `longitude` REAL, PRIMARY KEY(`_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `picture` TEXT, `name` TEXT, `email` TEXT, `latitude` REAL, `longitude` REAL, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "_id",
-            "columnName": "_id",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -47,7 +47,7 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "_id"
+            "id"
           ],
           "autoGenerate": false
         },
@@ -57,7 +57,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"85406cb4c2573c90f5cb9874fc6e344c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"be67a237308f76d10c4015b13419d78f\")"
     ]
   }
 }

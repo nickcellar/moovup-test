@@ -5,7 +5,7 @@ import android.arch.persistence.room.*
 
 @Entity
 data class Friend(
-        @PrimaryKey @ColumnInfo(name = "_id") val _id: String,
+        @PrimaryKey @ColumnInfo(name = "id") val id: String,
         @ColumnInfo(name = "picture") var picture: String? = null,
         @ColumnInfo(name = "name") var name: String? = null,
         @ColumnInfo(name = "email") var email: String? = null,
@@ -18,11 +18,14 @@ interface FriendDao {
     @Query("SELECT * FROM friend")
     fun all(): LiveData<List<Friend>>
 
-    @Query("SELECT * FROM friend WHERE _id IN (:friendIds)")
+    @Query("SELECT * FROM friend WHERE id IN (:friendIds)")
     fun loadAllByIds(friendIds: IntArray): List<Friend>
 
     @Query("SELECT * FROM friend WHERE name LIKE :name LIMIT 1")
     fun findByName(name: String): Friend
+
+    @Query("SELECT * FROM friend WHERE id = :id LIMIT 1")
+    fun findById(id: String): Friend
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(friends: List<Friend>)
