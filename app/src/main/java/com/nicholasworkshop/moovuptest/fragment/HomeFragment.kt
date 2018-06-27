@@ -35,13 +35,12 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        (activity!!.application as MainApplication).component.inject(this)
-        val component = DaggerHomeComponent
+        DaggerHomeComponent
                 .builder()
                 .mainComponent((activity!!.application as MainApplication).component)
+                .homeModule(HomeModule(this))
                 .build()
                 .inject(this)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
