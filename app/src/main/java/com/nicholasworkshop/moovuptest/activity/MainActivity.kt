@@ -3,7 +3,6 @@ package com.nicholasworkshop.moovuptest.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.nicholasworkshop.moovuptest.R
-import com.nicholasworkshop.moovuptest.fragment.DetailFragment
 import com.nicholasworkshop.moovuptest.fragment.HomeFragment
 
 class MainActivity : AppCompatActivity() {

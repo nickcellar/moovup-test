@@ -1,8 +1,10 @@
 package com.nicholasworkshop.moovuptest
 
 import com.nicholasworkshop.moovuptest.api.ApiModule
-import com.nicholasworkshop.moovuptest.fragment.HomeFragment
+import com.nicholasworkshop.moovuptest.api.FriendService
 import com.nicholasworkshop.moovuptest.model.DatabaseModule
+import com.nicholasworkshop.moovuptest.model.FriendDao
+import com.nicholasworkshop.moovuptest.model.FriendDatabase
 import dagger.Component
 import javax.inject.Singleton
 
@@ -13,5 +15,9 @@ import javax.inject.Singleton
         ApiModule::class))
 interface MainComponent {
 
-    fun inject(homeFragment: HomeFragment)
+    fun friendService(): FriendService
+
+    fun friendDatabase(): FriendDatabase
+
+    fun friendDao(): FriendDao
 }

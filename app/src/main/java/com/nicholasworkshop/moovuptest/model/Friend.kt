@@ -1,8 +1,6 @@
 package com.nicholasworkshop.moovuptest.model
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.persistence.room.*
 
 @Entity
@@ -37,17 +35,4 @@ interface FriendDao {
 abstract class FriendDatabase : RoomDatabase() {
 
     abstract fun friendDao(): FriendDao
-}
-
-class FriendViewModel(
-        val friendDao: FriendDao
-) : ViewModel()
-
-@Suppress("UNCHECKED_CAST")
-class FriendViewModelFactory(
-        val friendDao: FriendDao
-) : ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return FriendViewModel(friendDao) as T
-    }
 }

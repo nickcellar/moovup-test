@@ -1,7 +1,8 @@
 package com.nicholasworkshop.moovuptest.fragment
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -13,7 +14,9 @@ import com.nicholasworkshop.moovuptest.MainApplication
 import com.nicholasworkshop.moovuptest.R
 import com.nicholasworkshop.moovuptest.api.FriendService
 import com.nicholasworkshop.moovuptest.databinding.ViewFriendBinding
-import com.nicholasworkshop.moovuptest.model.*
+import com.nicholasworkshop.moovuptest.model.Friend
+import com.nicholasworkshop.moovuptest.model.FriendDao
+import com.nicholasworkshop.moovuptest.model.FriendDatabase
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -26,14 +29,19 @@ class HomeFragment : Fragment() {
     @Inject lateinit var friendService: FriendService
     @Inject lateinit var friendDatabase: FriendDatabase
     @Inject lateinit var friendDao: FriendDao
-    //    @Inject lateinit var viewModel: FriendViewModel
-    @Inject lateinit var factory: FriendViewModelFactory
+    @Inject lateinit var viewModel: HomeViewModel
 
     private lateinit var adapter: Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity!!.application as MainApplication).component.inject(this)
+//        (activity!!.application as MainApplication).component.inject(this)
+        val component = DaggerHomeComponent
+                .builder()
+                .mainComponent((activity!!.application as MainApplication).component)
+                .build()
+                .inject(this)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,7 +50,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel = ViewModelProviders.of(this, factory).get(FriendViewModel::class.java)
         val adapter = Adapter()
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
@@ -91,5 +98,18 @@ class HomeViewHolder(
     fun bind(friend: Friend) {
         binding.friend = friend
         binding.executePendingBindings()
+    }
+}
+
+class HomeViewModel(
+        val friendDao: FriendDao
+) : ViewModel()
+
+@Suppress("UNCHECKED_CAST")
+class HomeViewModelFactory(
+        val friendDao: FriendDao
+) : ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return HomeViewModel(friendDao) as T
     }
 }
