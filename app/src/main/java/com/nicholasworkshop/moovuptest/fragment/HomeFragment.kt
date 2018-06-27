@@ -1,7 +1,6 @@
 package com.nicholasworkshop.moovuptest.fragment
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -14,18 +13,22 @@ import com.nicholasworkshop.moovuptest.MainApplication
 import com.nicholasworkshop.moovuptest.R
 import com.nicholasworkshop.moovuptest.api.FriendService
 import com.nicholasworkshop.moovuptest.databinding.ViewFriendBinding
-import com.nicholasworkshop.moovuptest.model.Friend
-import com.nicholasworkshop.moovuptest.model.FriendDao
+import com.nicholasworkshop.moovuptest.model.*
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.util.*
 import javax.inject.Inject
 
 
 class HomeFragment : Fragment() {
 
     @Inject lateinit var friendService: FriendService
+    @Inject lateinit var friendDatabase: FriendDatabase
     @Inject lateinit var friendDao: FriendDao
+    //    @Inject lateinit var viewModel: FriendViewModel
+    @Inject lateinit var factory: FriendViewModelFactory
 
-    private lateinit var viewModel: HomeViewModel
     private lateinit var adapter: Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,12 +42,26 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val viewModel = ViewModelProviders.of(this, factory).get(FriendViewModel::class.java)
+        val adapter = Adapter()
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = Adapter()
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        recyclerView.adapter = adapter
         viewModel.friendDao.all().observe(this, Observer<List<Friend>> { friendList ->
-            (recyclerView.adapter as Adapter).friendList = friendList
+            adapter.friendList = friendList
+            adapter.notifyDataSetChanged()
         })
+        Observable
+                .just(friendDao)
+                .subscribeOn(Schedulers.io())
+                .subscribe {
+                    it.insertAll(Friend(
+                            UUID.randomUUID().toString(),
+                            "sadasdasd",
+                            "sadasdasd",
+                            "sadasdasd",
+                            123.123,
+                            2523.3))
+                }
     }
 
     inner class Adapter : RecyclerView.Adapter<HomeViewHolder>() {
@@ -66,9 +83,6 @@ class HomeFragment : Fragment() {
     }
 }
 
-class HomeViewModel @Inject constructor(
-        val friendDao: FriendDao
-) : ViewModel()
 
 class HomeViewHolder(
         private val binding: ViewFriendBinding

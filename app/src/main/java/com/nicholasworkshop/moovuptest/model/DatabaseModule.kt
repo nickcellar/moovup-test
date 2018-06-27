@@ -1,5 +1,6 @@
 package com.nicholasworkshop.moovuptest.model
 
+import android.arch.lifecycle.ViewModelProviders
 import android.arch.persistence.room.Room
 import android.content.Context
 import dagger.Module
@@ -24,4 +25,17 @@ class DatabaseModule {
     fun friendDao(friendDatabase: FriendDatabase): FriendDao {
         return friendDatabase.friendDao()
     }
+
+
+    @Singleton
+    @Provides
+    fun friendViewModelFactory(friendDao: FriendDao): FriendViewModelFactory {
+        return FriendViewModelFactory(friendDao)
+    }
+
+//    @Singleton
+//    @Provides
+//    fun friendViewModel(factory: FriendViewModelFactory): FriendViewModel {
+//        return ViewModelProviders.of(fragment, factory).get(FriendViewModel::class.java)
+//    }
 }
