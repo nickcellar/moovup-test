@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.nicholasworkshop.moovuptest.R
 import com.nicholasworkshop.moovuptest.fragment.DetailFragment
+import com.nicholasworkshop.moovuptest.fragment.HomeFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,7 +13,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.containerView, DetailFragment())
+                .replace(R.id.containerView, HomeFragment())
+//                .replace(R.id.containerView, DetailFragment())
                 .commit()
     }
 }

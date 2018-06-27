@@ -12,10 +12,16 @@ class DatabaseModule {
 
     @Provides
     @Singleton
-    private fun create(context: Context): FriendDatabase {
+    fun friendDatabase(context: Context): FriendDatabase {
         return Room.databaseBuilder(
                 context,
                 FriendDatabase::class.java,
                 "FriendDatabase").build()
+    }
+
+    @Provides
+    @Singleton
+    fun friendDao(friendDatabase: FriendDatabase): FriendDao {
+        return friendDatabase.friendDao()
     }
 }

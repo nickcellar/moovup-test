@@ -9,13 +9,13 @@ interface FriendService {
     fun get(): Observable<List<Friend>>
 
     data class Friend(
-            private val _id: String? = null,
-            private val picture: String? = null,
-            private val name: String? = null,
-            private val location: Location? = null,
-            private val email: String? = null)
+            val _id: String? = null,
+            val picture: String? = null,
+            val name: String? = null,
+            val location: Location? = null,
+            val email: String? = null)
 
     data class Location(
-            private val latitude: Double? = null,
-            private val longitude: Double? = null)
+            val latitude: Double? = null,
+            val longitude: Double? = null)
 }
