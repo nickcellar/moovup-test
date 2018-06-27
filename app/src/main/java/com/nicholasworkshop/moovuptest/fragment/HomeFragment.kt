@@ -17,10 +17,8 @@ import com.nicholasworkshop.moovuptest.databinding.ViewFriendBinding
 import com.nicholasworkshop.moovuptest.model.Friend
 import com.nicholasworkshop.moovuptest.model.FriendDao
 import com.nicholasworkshop.moovuptest.model.FriendDatabase
-import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_home.*
-import java.util.*
 import javax.inject.Inject
 
 
@@ -56,17 +54,17 @@ class HomeFragment : Fragment() {
             adapter.friendList = friendList
             adapter.notifyDataSetChanged()
         })
-        Observable
-                .just(friendDao)
+        friendService.get()
                 .subscribeOn(Schedulers.io())
                 .subscribe {
-                    it.insertAll(Friend(
-                            UUID.randomUUID().toString(),
-                            "sadasdasd",
-                            "sadasdasd",
-                            "sadasdasd",
-                            123.123,
-                            2523.3))
+                    friendDao.insertAll(it.map {
+                        Friend(it._id!!,
+                                it.picture,
+                                it.name,
+                                it.email,
+                                it.location!!.latitude,
+                                it.location.longitude)
+                    })
                 }
     }
 

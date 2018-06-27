@@ -25,7 +25,7 @@ interface FriendDao {
     fun findByName(name: String): Friend
 
     @Insert
-    fun insertAll(vararg friends: Friend)
+    fun insertAll(friends: List<Friend>)
 
     @Delete
     fun delete(friend: Friend)
