@@ -2,7 +2,6 @@ package com.nicholasworkshop.moovuptest.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,7 +57,6 @@ class DetailFragment : Fragment() {
                 .map { it.findById(id) }
                 .observeOn(mainThread())
                 .subscribe {
-                    Log.e("AAAA", "ID = ${it.name}")
                     binding.friend = it
                     binding.executePendingBindings()
                     subject.onNext(LatLng(it.latitude!!, it.longitude!!))

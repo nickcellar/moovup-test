@@ -18,7 +18,6 @@ import com.nicholasworkshop.moovuptest.model.Friend
 import com.nicholasworkshop.moovuptest.model.FriendDao
 import com.nicholasworkshop.moovuptest.model.FriendDatabase
 import io.reactivex.schedulers.Schedulers
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -26,7 +25,6 @@ import javax.inject.Inject
 class HomeFragment : Fragment() {
 
     @Inject lateinit var friendService: FriendService
-    @Inject lateinit var friendDatabase: FriendDatabase
     @Inject lateinit var friendDao: FriendDao
     @Inject lateinit var viewModel: HomeViewModel
 
