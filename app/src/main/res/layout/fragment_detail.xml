@@ -10,15 +10,19 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/infoView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="123123123" />
-    </LinearLayout>
+        <!--<include layout="@layout/view_friend"/>-->
+
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="123123123" />-->
+
+    </FrameLayout>
 
 </LinearLayout>

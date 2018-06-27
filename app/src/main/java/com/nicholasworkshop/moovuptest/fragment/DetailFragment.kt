@@ -11,9 +11,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nicholasworkshop.moovuptest.MainApplication
 import com.nicholasworkshop.moovuptest.R
+import com.nicholasworkshop.moovuptest.databinding.ViewFriendBinding
 import com.nicholasworkshop.moovuptest.model.FriendDao
 import io.reactivex.Observable.just
+import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.schedulers.Schedulers.io
+import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.fragment_detail.*
 import javax.inject.Inject
 
@@ -34,17 +37,11 @@ class DetailFragment : Fragment() {
 
     @Inject lateinit var friendDao: FriendDao
 
+    private val subject: BehaviorSubject<LatLng> = BehaviorSubject.create()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity!!.application as MainApplication).component.inject(this)
-        val id = arguments!!.getString(ARG_ID)
-        Log.e("AAAA", "ID = $id")
-        just(friendDao)
-                .subscribeOn(io())
-                .map { it.findById(id) }
-                .subscribe {
-                    Log.e("AAAA", "ID = ${it.name}")
-                }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,11 +50,28 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val id = arguments!!.getString(ARG_ID)
+        val binding = ViewFriendBinding.inflate(layoutInflater, infoView, true)
+
+        just(friendDao)
+                .subscribeOn(io())
+                .map { it.findById(id) }
+                .observeOn(mainThread())
+                .subscribe {
+                    Log.e("AAAA", "ID = ${it.name}")
+                    binding.friend = it
+                    binding.executePendingBindings()
+                    subject.onNext(LatLng(it.latitude!!, it.longitude!!))
+                }
+
         mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync {
-            val sydney = LatLng(-34.0, 151.0)
-            it.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-            it.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        mapView.getMapAsync { map ->
+            subject.subscribe {
+                map.addMarker(MarkerOptions().position(it).title("Hi"))
+                map.moveCamera(CameraUpdateFactory.newLatLng(it))
+                map.resetMinMaxZoomPreference()
+            }
+
         }
     }
 
