@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.nicholasworkshop.moovuptest.MainApplication
 import com.nicholasworkshop.moovuptest.R
 import com.nicholasworkshop.moovuptest.databinding.ViewFriendBinding
+import com.nicholasworkshop.moovuptest.model.Friend
 import com.nicholasworkshop.moovuptest.model.FriendDao
 import io.reactivex.Observable.just
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -36,7 +37,7 @@ class DetailFragment : Fragment() {
 
     @Inject lateinit var friendDao: FriendDao
 
-    private val subject: BehaviorSubject<LatLng> = BehaviorSubject.create()
+    private val subject: BehaviorSubject<Friend> = BehaviorSubject.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,17 +61,17 @@ class DetailFragment : Fragment() {
                     activity!!.title = "Your friend: ${it.name}";
                     binding.friend = it
                     binding.executePendingBindings()
-                    subject.onNext(LatLng(it.latitude!!, it.longitude!!))
+                    subject.onNext(it)
                 }
 
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync { map ->
             subject.subscribe {
-                map.addMarker(MarkerOptions().position(it).title("Hi"))
-                map.moveCamera(CameraUpdateFactory.newLatLng(it))
+                val latLng = LatLng(it.latitude!!, it.longitude!!)
+                map.addMarker(MarkerOptions().position(latLng).title(it.name))
+                map.moveCamera(CameraUpdateFactory.newLatLng(latLng))
                 map.resetMinMaxZoomPreference()
             }
-
         }
     }
 
