@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
                 .beginTransaction()
                 .addToBackStack("home")
-                .replace(R.id.containerView, HomeFragment())
+                .replace(R.id.containerView, HomeFragment.newInstance())
                 .commit()
     }
 

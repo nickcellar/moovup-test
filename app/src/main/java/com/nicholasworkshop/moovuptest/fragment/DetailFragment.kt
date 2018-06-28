@@ -19,6 +19,9 @@ import io.reactivex.schedulers.Schedulers.io
 import io.reactivex.subjects.BehaviorSubject
 import kotlinx.android.synthetic.main.fragment_detail.*
 import javax.inject.Inject
+import android.transition.Fade
+
+
 
 class DetailFragment : Fragment() {
 
@@ -31,6 +34,10 @@ class DetailFragment : Fragment() {
             args.putSerializable(ARG_ID, friendId)
             val fragment = DetailFragment()
             fragment.arguments = args
+//            val exitFade = Fade()
+//            exitFade.duration = FADE_DEFAULT_TIME
+            fragment.exitTransition = Fade()
+            fragment.enterTransition = Fade()
             return fragment
         }
     }

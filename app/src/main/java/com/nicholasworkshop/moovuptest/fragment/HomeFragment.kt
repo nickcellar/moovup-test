@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.transition.Fade
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,15 @@ import javax.inject.Inject
 
 
 class HomeFragment : Fragment() {
+
+    companion object {
+        fun newInstance(): HomeFragment {
+            val fragment = HomeFragment()
+            fragment.exitTransition = Fade()
+            fragment.enterTransition = Fade()
+            return fragment
+        }
+    }
 
     @Inject lateinit var friendService: FriendService
     @Inject lateinit var friendDao: FriendDao
