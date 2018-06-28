@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ class HomeFragment : Fragment() {
     @Inject lateinit var friendService: FriendService
     @Inject lateinit var friendDao: FriendDao
     @Inject lateinit var viewModel: HomeViewModel
+    @Inject lateinit var adapter: HomeRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +46,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity!!.title = "All friends"
-        val adapter = Adapter()
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
         viewModel.friendDao.all().observe(this, Observer<List<Friend>> { friendList ->
@@ -64,30 +65,33 @@ class HomeFragment : Fragment() {
                     })
                 }
     }
+}
 
-    inner class Adapter : RecyclerView.Adapter<HomeViewHolder>() {
+class HomeRecyclerViewAdapter(
+        private val fragmentManager: FragmentManager
+) : RecyclerView.Adapter<HomeViewHolder>() {
 
-        var friendList: List<Friend>? = null
+    var friendList: List<Friend>? = null
 
-        override fun getItemCount(): Int {
-            return if (friendList != null) friendList!!.size else 0
+    override fun getItemCount(): Int {
+        return if (friendList != null) friendList!!.size else 0
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ViewFriendBinding.inflate(inflater, parent, false)
+        binding.clickListener = View.OnClickListener {
+            fragmentManager
+                    .beginTransaction()
+                    .addToBackStack("detail")
+                    .replace(R.id.containerView, DetailFragment.newInstance(binding.friend!!.id))
+                    .commit()
         }
+        return HomeViewHolder(binding)
+    }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-            val binding = ViewFriendBinding.inflate(layoutInflater, parent, false)
-            binding.clickListener = View.OnClickListener {
-                fragmentManager!!
-                        .beginTransaction()
-                        .addToBackStack("detail")
-                        .replace(R.id.containerView, DetailFragment.newInstance(binding.friend!!.id))
-                        .commit()
-            }
-            return HomeViewHolder(binding)
-        }
-
-        override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-            holder.bind(friendList!![position])
-        }
+    override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
+        holder.bind(friendList!![position])
     }
 }
 

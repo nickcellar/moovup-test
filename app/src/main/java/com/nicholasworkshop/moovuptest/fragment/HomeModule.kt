@@ -1,6 +1,7 @@
 package com.nicholasworkshop.moovuptest.fragment
 
 import android.arch.lifecycle.ViewModelProviders
+import android.support.v4.app.FragmentManager
 import com.nicholasworkshop.moovuptest.model.FriendDao
 import dagger.Module
 import dagger.Provides
@@ -18,5 +19,17 @@ class HomeModule(val fragment: HomeFragment) {
     @Provides
     fun homeViewModel(factory: HomeViewModelFactory): HomeViewModel {
         return ViewModelProviders.of(fragment, factory).get(HomeViewModel::class.java)
+    }
+
+    @HomeScope
+    @Provides
+    fun adapter(fragmentManager: FragmentManager): HomeRecyclerViewAdapter {
+        return HomeRecyclerViewAdapter(fragmentManager)
+    }
+
+    @HomeScope
+    @Provides
+    fun fragmentManager(): FragmentManager {
+        return fragment.fragmentManager!!
     }
 }
